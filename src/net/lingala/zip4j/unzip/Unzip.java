@@ -137,31 +137,21 @@ public class Unzip {
 			// If file header is a directory, then check if the directory exists
 			// If not then create a directory and return
 			if (fileHeader.isDirectory()) {
-				try {
-					String fileName = fileHeader.getFileName();
-					if (!Zip4jUtil.isStringNotNullAndNotEmpty(fileName)) {
-						return;
-					}
-					String completePath = outPath + fileName;
-					File file = new File(completePath);
-					if (!file.exists()) {
-						file.mkdirs();
-					}
-				} catch (Exception e) {
-					progressMonitor.endProgressMonitorError(e);
-					throw new ZipException(e);
+				String fileName = fileHeader.getFileName();
+				if (!Zip4jUtil.isStringNotNullAndNotEmpty(fileName)) {
+					return;
+				}
+				String completePath = outPath + fileName;
+				File file = new File(completePath);
+				if (!file.exists()) {
+					file.mkdirs();
 				}
 			} else {
 				//Create Directories
 				checkOutputDirectoryStructure(fileHeader, outPath, newFileName);
 				
 				UnzipEngine unzipEngine = new UnzipEngine(zipModel, fileHeader);
-				try {
-					unzipEngine.unzipFile(progressMonitor, outPath, newFileName, unzipParameters);
-				} catch (Exception e) {
-					progressMonitor.endProgressMonitorError(e);
-					throw new ZipException(e);
-				}
+				unzipEngine.unzipFile(progressMonitor, outPath, newFileName, unzipParameters);
 			}
 		} catch (ZipException e) {
 			progressMonitor.endProgressMonitorError(e);
@@ -218,9 +208,9 @@ public class Unzip {
 			FileHeader fileHeader = (FileHeader)fileHeaders.get(i);
 			if (fileHeader.getZip64ExtendedInfo() != null && 
 					fileHeader.getZip64ExtendedInfo().getUnCompressedSize() > 0) {
-				totalWork += fileHeader.getZip64ExtendedInfo().getCompressedSize();
+				totalWork += fileHeader.getZip64ExtendedInfo().getUnCompressedSize();
 			} else {
-				totalWork += fileHeader.getCompressedSize();
+				totalWork += fileHeader.getUncompressedSize();
 			}
 			
 		}
