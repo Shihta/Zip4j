@@ -653,7 +653,7 @@ public class Zip4jUtil {
 		}
 	}
 	
-	public static ArrayList getSplitZipFiles(ZipModel zipModel) throws ZipException {
+	public static ArrayList<String> getSplitZipFiles(ZipModel zipModel) throws ZipException {
 		if (zipModel == null) {
 			throw new ZipException("cannot get split zip files: zipmodel is null");
 		}
@@ -662,7 +662,7 @@ public class Zip4jUtil {
 			return null;
 		}
 		
-		ArrayList retList = new ArrayList();
+		ArrayList<String> retList = new ArrayList<String>();
 		String currZipFile = zipModel.getZipFile();
 		String zipFileName = (new File(currZipFile)).getName();
 		String partFile = null;
@@ -687,7 +687,7 @@ public class Zip4jUtil {
 					retList.add(zipModel.getZipFile());
 				} else {
 					String fileExt = ".z0";
-					if (i > 9) {
+					if (i >= 9) {
 						fileExt = ".z";
 					}
 					partFile = (zipFileName.indexOf(".") >= 0) ? currZipFile.substring(0, currZipFile.lastIndexOf(".")) : currZipFile;
