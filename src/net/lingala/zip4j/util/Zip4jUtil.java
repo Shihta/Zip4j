@@ -111,7 +111,7 @@ public class Zip4jUtil {
 			File file = new File(path);
 			return file.canWrite();
 		} catch (Exception e) {
-			throw new ZipException("cannot read zip file");
+			throw new ZipException("cannot write zip file");
 		}
 	}
 	
